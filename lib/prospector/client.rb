@@ -9,6 +9,7 @@ module Prospector
 
       case response.code
       when "401" then raise AuthenticationError
+      when "402" then raise AccountSubscriptionStatusError, json[:error]
       when "200" then return true
       else
         raise UnknownError
@@ -27,6 +28,10 @@ module Prospector
 
     def endpoint
       @endpoint ||= URI('http://api.gemprospector.com/v1/specifications.json')
+    end
+
+    def json
+      @json ||= JSON.parse(response.body)
     end
 
     def build_request
