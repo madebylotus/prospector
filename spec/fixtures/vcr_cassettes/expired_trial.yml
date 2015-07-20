@@ -1,0 +1,57 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: http://api.gemprospector.com/v1/specifications.json
+    body:
+      encoding: UTF-8
+      string: '{"specifications":[]}'
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+      Host:
+      - api.gemprospector.com
+      X-Auth-Token:
+      - username
+      X-Auth-Secret:
+      - password
+      Content-Type:
+      - application/json
+  response:
+    status:
+      code: 402
+      message: 'Payment Required '
+    headers:
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Content-Type-Options:
+      - nosniff
+      Content-Type:
+      - application/json; charset=utf-8
+      Cache-Control:
+      - no-cache
+      X-Request-Id:
+      - 76c4e65a-54ae-4dfb-a5ff-aac6c7141a71
+      X-Runtime:
+      - '0.015806'
+      Server:
+      - WEBrick/1.3.1 (Ruby/2.2.2/2015-04-13)
+      Date:
+      - Mon, 20 Jul 2015 18:44:27 GMT
+      Content-Length:
+      - '85'
+      Connection:
+      - Keep-Alive
+    body:
+      encoding: UTF-8
+      string: '{"error":"This account is expired and requires payment information
+        to continue use."}'
+    http_version:
+  recorded_at: Mon, 20 Jul 2015 18:44:27 GMT
+recorded_with: VCR 2.9.3

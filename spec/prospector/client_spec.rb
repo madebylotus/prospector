@@ -2,14 +2,14 @@ require 'spec_helper'
 
 module Prospector
   describe Client do
-    context 'with invalid credentials' do
-      before do
-        Prospector.configure do |config|
-          config.secret_token = 'username'
-          config.client_secret = 'password'
-        end
+    before do
+      Prospector.configure do |config|
+        config.secret_token = 'username'
+        config.client_secret = 'password'
       end
+    end
 
+    context 'with invalid credentials' do
       let(:specifications) { [] }
 
       it 'raises error' do
@@ -20,13 +20,6 @@ module Prospector
     end
 
     context 'with valid credentials' do
-      before do
-        Prospector.configure do |config|
-          config.secret_token = 'username'
-          config.client_secret = 'password'
-        end
-      end
-
       let(:specification) { double(name: 'devise', version: Gem::Version.new('4.2.1')) }
       let(:specifications) { [ specification ] }
 
@@ -40,16 +33,21 @@ module Prospector
     context 'when encountering an error' do
       let(:specifications) { [] }
 
-      before do
-        Prospector.configure do |config|
-          config.secret_token = 'username'
-          config.client_secret = 'password'
+      it 'raises an exception for a 500 error' do
+        VCR.use_cassette 'server 500 error' do
+          expect { subject.deliver(specifications) }.to raise_error(UnknownError)
         end
       end
 
-      it 'raises an error' do
-        VCR.use_cassette 'server 500 error' do
-          expect { subject.deliver(specifications) }.to raise_error(UnknownError)
+      it 'warns for expired accounts' do
+        VCR.use_cassette 'expired_trial' do
+          expect { subject.deliver(specifications) }.to raise_error(AccountSubscriptionStatusError)
+        end
+      end
+
+      it 'warns for cancelled accounts' do
+        VCR.use_cassette 'cancelled_subscription' do
+          expect { subject.deliver(specifications) }.to raise_error(AccountSubscriptionStatusError)
         end
       end
     end
