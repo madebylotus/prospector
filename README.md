@@ -33,12 +33,31 @@ or:
 Prospector.configure do |config|
   config.secret_token = 'token from service'
   config.client_secret = 'secret from service'
+
+  config.enabled = Rails.env.production?
 end
 ```
 
 ## Usage
 
-Currently the process of notifying the service is not automated.  In the future this will be provided via a rake task as well as a Rails integration.
+### Rails
+
+When the gem is included into a Rails project, a Rack app is inserted into your middleware stack that will notify our API on the very first request, if you have Prospector enabled.
+
+You can choose to enable Prospector in the initializer file, or by the presence of an ENV variable "PROSPECTOR_ENABLED" as shown below.
+
+```ruby
+# set the ENV variable
+# ENV['PROSPECTOR_ENABLED'] = 'true'
+# or
+Prospector.configure do |config|
+  config.enabled = Rails.env.production?
+end
+```
+
+### Without Rails
+
+Without Rails, you need to manually call the method to notify the Prospector service yourself.
 
 ```ruby
 Prospector.notify!
