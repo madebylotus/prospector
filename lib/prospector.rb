@@ -6,6 +6,8 @@ require "prospector/client"
 require "prospector/configuration"
 require "prospector/error"
 
+require "prospector/railtie" if defined?(Rails)
+
 begin
   require "pry"
 rescue LoadError
@@ -16,17 +18,27 @@ module Prospector
     attr_writer :configuration
   end
 
-  def self.configuration
-    @configuration ||= Configuration.new
+  module ClassMethods
+    def configuration
+      @configuration ||= Configuration.new
+    end
+
+    def configure
+      yield(configuration)
+    end
+
+    def enabled?
+      configuration.enabled?
+    end
+
+    def notify!
+      configuration.notify!
+
+      specifications = Bundler.environment.specs
+
+      Client.deliver(specifications)
+    end
   end
 
-  def self.configure
-    yield(configuration)
-  end
-
-  def self.notify!
-    specifications = Bundler.environment.specs
-
-    Client.deliver(specifications)
-  end
+  extend ClassMethods
 end

@@ -18,4 +18,12 @@ describe Prospector do
       expect(subject.configuration.secret_token).to eq('token')
     end
   end
+
+  describe '#enabled?' do
+    it 'delegates to the configuration instance' do
+      expect_any_instance_of(Prospector::Configuration).to receive(:enabled?).and_return(true)
+
+      expect(subject).to be_enabled
+    end
+  end
 end
