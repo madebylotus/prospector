@@ -32,6 +32,8 @@ module Prospector
     end
 
     def notify!
+      configuration.notify!
+
       specifications = Bundler.environment.specs
 
       Client.deliver(specifications)

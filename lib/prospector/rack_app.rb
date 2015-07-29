@@ -7,12 +7,22 @@ module Prospector
     def call(env)
       @request = Rack::Request.new(env)
 
-      notify_with_logging if Prospector.enabled?
+      notify_once if Prospector.enabled?
 
       @app.call(env)
     end
 
     private
+
+    def notify_once
+      return if notified?
+
+      notify_with_logging
+    end
+
+    def notified?
+      Prospector.configuration.notified?
+    end
 
     def notify_with_logging
       Rails.logger.debug('[Prospector] Began notifying  API')
