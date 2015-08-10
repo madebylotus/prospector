@@ -5,6 +5,7 @@ require "prospector/version"
 require "prospector/client"
 require "prospector/configuration"
 require "prospector/error"
+require "prospector/background"
 
 require "prospector/railtie" if defined?(Rails)
 
