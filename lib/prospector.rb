@@ -5,6 +5,7 @@ require "prospector/version"
 require "prospector/client"
 require "prospector/configuration"
 require "prospector/error"
+require "prospector/background"
 
 require "prospector/railtie" if defined?(Rails)
 
@@ -32,6 +33,8 @@ module Prospector
     end
 
     def notify!
+      raise NotEnabledError unless enabled?
+
       configuration.notify!
 
       specifications = Bundler.environment.specs

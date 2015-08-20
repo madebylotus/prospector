@@ -16,6 +16,7 @@ module Prospector
       before do
         allow(ENV).to receive(:[]).with('PROSPECTOR_SECRET_TOKEN').and_return('token')
         allow(ENV).to receive(:[]).with('PROSPECTOR_CLIENT_SECRET').and_return('password')
+        allow(ENV).to receive(:[]).with('PROSPECTOR_BACKGROUND_ADAPTER').and_return('sidekiq')
       end
 
       it 'returns the token' do
@@ -37,6 +38,10 @@ module Prospector
 
         expect(subject).not_to be_enabled
       end
+
+      it 'returns the background adapter' do
+        expect(subject.background_adapter).to eq(:sidekiq)
+      end
     end
 
     context 'when configured directly' do
@@ -44,6 +49,7 @@ module Prospector
         subject.secret_token = 'token'
         subject.client_secret = 'password'
         subject.enabled = false
+        subject.background_adapter = :sidekiq
       end
 
       it 'returns the token' do
@@ -54,14 +60,24 @@ module Prospector
         expect(subject.client_secret).to eq('password')
       end
 
-      it 'returns false when disabled' do
-        expect(subject).not_to be_enabled
+      describe '#enabled' do
+        it 'returns false when disabled' do
+          expect(subject).not_to be_enabled
+        end
+
+        it 'ignores the ENV setting' do
+          allow(ENV).to receive(:[]).with('PROSPECTOR_ENABLED').and_return('true')
+
+          expect(subject).not_to be_enabled
+        end
       end
 
-      it 'ignores the ENV setting' do
-        allow(ENV).to receive(:[]).with('PROSPECTOR_ENABLED').and_return('true')
+      describe '#background_adapter' do
+        it 'ignores the ENV setting' do
+          allow(ENV).to receive(:[]).with('PROSPECTOR_BACKGROUND_ADAPTER').and_return('activejob')
 
-        expect(subject).not_to be_enabled
+          expect(subject.background_adapter).to eq(:sidekiq)
+        end
       end
     end
   end
