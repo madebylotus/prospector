@@ -4,7 +4,6 @@ require "prospector/background/notify_worker" if defined?(Sidekiq::Worker)
 
 module Prospector
   module Background
-
     def enqueue
       Coordinator.new.enqueue
     end

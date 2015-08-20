@@ -33,6 +33,7 @@ or:
 Prospector.configure do |config|
   config.secret_token = 'token from service'
   config.client_secret = 'secret from service'
+  config.background_adapter = :sidekiq
 
   config.enabled = Rails.env.production?
 end
@@ -42,7 +43,7 @@ end
 
 ### Rails
 
-When the gem is included into a Rails project, a Rack app is inserted into your middleware stack that will notify our API on the very first request, if you have Prospector enabled.
+When the gem is included into a Rails project, you have the option of specifying a background adapter to run the notification service asynchronously on.  The default adapter is `ActiveJob` if available in your Rails project, but we also support `Sidekiq` at this time.
 
 You can choose to enable Prospector in the initializer file, or by the presence of an ENV variable "PROSPECTOR_ENABLED" as shown below.
 
