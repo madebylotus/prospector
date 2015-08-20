@@ -3,7 +3,7 @@ module Prospector; module Background
     include Sidekiq::Worker
 
     def perform
-      Prospector.notify! if Prospector.enabled?
+      Prospector.notify!
     end
   end
 end; end

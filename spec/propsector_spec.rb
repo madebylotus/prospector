@@ -26,4 +26,40 @@ describe Prospector do
       expect(subject).to be_enabled
     end
   end
+
+  describe '#notify!' do
+    context 'when disabled' do
+      before do
+        Prospector.configure do |config|
+          config.enabled = false
+        end
+      end
+
+      it 'raises an error' do
+        expect { subject.notify! }.to raise_error(Prospector::NotEnabledError)
+      end
+    end
+
+    context 'when enabled' do
+      before do
+        Prospector.configure do |config|
+          config.enabled = true
+        end
+      end
+
+      it 'marks the delivery' do
+        allow(Prospector::Client).to receive(:deliver)
+        expect_any_instance_of(Prospector::Configuration).to receive(:notify!)
+
+        subject.notify!
+      end
+
+      it 'delivers the specifications' do
+        allow(Bundler).to receive(:environment).and_return(double(specs: []))
+        expect(Prospector::Client).to receive(:deliver).with([])
+
+        subject.notify!
+      end
+    end
+  end
 end

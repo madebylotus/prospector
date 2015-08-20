@@ -33,6 +33,8 @@ module Prospector
     end
 
     def notify!
+      raise NotEnabledError unless enabled?
+
       configuration.notify!
 
       specifications = Bundler.environment.specs

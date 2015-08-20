@@ -3,5 +3,6 @@ module Prospector
   class AuthenticationError < Error; end
   class InvalidCredentialsError < Error; end
   class AccountSubscriptionStatusError < Error; end
+  class NotEnabledError < Error; end
   class UnknownError < Error; end
 end

@@ -1,7 +1,7 @@
 module Prospector; module Background
   class NotifyJob < ActiveJob::Base
     def perform
-      Prospector.notify! if Prospector.enabled?
+      Prospector.notify!
     end
   end
 end; end
