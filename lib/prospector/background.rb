@@ -1,9 +1,9 @@
-require "prospector/background/coordinator"
-require "prospector/background/notify_job" if defined?(ActiveJob::Base)
-require "prospector/background/notify_worker" if defined?(Sidekiq::Worker)
-
 module Prospector
   module Background
+    autoload :Coordinator,  'prospector/background/coordinator'
+    autoload :NotifyJob,    'prospector/background/notify_job'
+    autoload :NotifyWorker, 'prospector/background/notify_worker'
+
     def enqueue
       Coordinator.new.enqueue
     end

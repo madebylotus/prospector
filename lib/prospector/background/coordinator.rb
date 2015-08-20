@@ -19,13 +19,13 @@ module Prospector; module Background
     end
 
     def enqueue_via_active_job
-      raise UnsupportedAdapterError unless defined?(NotifyJob)
+      raise UnsupportedAdapterError unless Object.const_defined?('ActiveJob::Base')
 
       NotifyJob.perform_later
     end
 
     def enqueue_via_sidekiq
-      raise UnsupportedAdapterError unless defined?(NotifyWorker)
+      raise UnsupportedAdapterError unless Object.const_defined?('Sidekiq::Worker')
 
       NotifyWorker.perform_async
     end

@@ -11,6 +11,7 @@ require "prospector/railtie" if defined?(Rails)
 
 begin
   require "pry"
+  require "sidekiq"
 rescue LoadError
 end
 
