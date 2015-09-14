@@ -70,6 +70,10 @@ Rails integration includes automatic detection and support for ActiveJob as well
 
 Valid background adapter options are `active_job`, `sidekiq`, and `none`.  ActiveJob is preferred and chosen in Rais 4.2 and above with built-in ActiveJob support.
 
+### RubyMotion
+
+Integration with RubyMotion is accomplished via a Rake task that can be run by hand, or simply letting the build system do it's magic.  By default, if you have enabled Prospector via an environment variable, or a configuration block, any time the binary is built for a device (such as for distribution) then Prospector will be notified without any further action.
+
 ### Rake Task
 
 If you prefer to notify the Prospector service at any other time, you can use the included Rake task.
