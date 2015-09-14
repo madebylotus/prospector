@@ -20,14 +20,18 @@ Or install it yourself as:
 
 ## Configuration
 
-The access token and secret can be configured either via environment variables, or with an initializer block.
+Projects can be configured via environment variables, a code block, or a RubyMotion configuration.
+
+### Environment Variables
 
 ```sh
+export PROSPECTOR_ENABLED=true
 export PROSPECTOR_SECRET_TOKEN=token
 export PROSPECTOR_CLIENT_SECRET=secret
+export PROSPECTOR_BACKGROUND_ADAPTER=sidekiq
 ```
 
-or:
+### Code Block
 
 ```ruby
 Prospector.configure do |config|
@@ -39,26 +43,44 @@ Prospector.configure do |config|
 end
 ```
 
+### RubyMotion
+
+A common configuration for a RubyMotion project follows, enabling only for release builds.
+
+```ruby
+Motion::Project::App.setup do |app|
+  app.prospector do |config|
+    config.secret_token = 'token from service'
+    config.client_secret = 'secret from service'
+  end
+
+  app.release do
+    app.prospector do |config|
+      config.enabled = true
+    end
+  end
+end
+```
+
 ## Usage
 
 ### Rails
 
-When the gem is included into a Rails project, you have the option of specifying a background adapter to run the notification service asynchronously on.  The default adapter is `ActiveJob` if available in your Rails project, but we also support `Sidekiq` at this time.
+Rails integration includes automatic detection and support for ActiveJob as well as Sidekiq, to deliver usage details to the Prospector API in the background on app boot.  Additionally, the rake task mentioned below is available to use at any time you see fit, for example as part of your deployment process.
 
-You can choose to enable Prospector in the initializer file, or by the presence of an ENV variable "PROSPECTOR_ENABLED" as shown below.
+Valid background adapter options are `active_job`, `sidekiq`, and `none`.  ActiveJob is preferred and chosen in Rais 4.2 and above with built-in ActiveJob support.
 
-```ruby
-# set the ENV variable
-# ENV['PROSPECTOR_ENABLED'] = 'true'
-# or
-Prospector.configure do |config|
-  config.enabled = Rails.env.production?
-end
+### Rake Task
+
+If you prefer to notify the Prospector service at any other time, you can use the included Rake task.
+
+```
+rake prospector:deliver
 ```
 
-### Without Rails
+### Manually
 
-Without Rails, you need to manually call the method to notify the Prospector service yourself.
+If you prefer to notify the Prospector API without using the included Rails or RubyMotion support, you can always call directly.
 
 ```ruby
 Prospector.notify!
