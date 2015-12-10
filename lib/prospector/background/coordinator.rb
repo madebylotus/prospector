@@ -6,7 +6,8 @@ module Prospector; module Background
       case adapter_name
       when :active_job then enqueue_via_active_job
       when :sidekiq then enqueue_via_sidekiq
-      when :none then perform_immediately
+      when :inline then perform_immediately
+      when :none then return
       else
         raise UnsupportedAdapterError.new(adapter_name)
       end

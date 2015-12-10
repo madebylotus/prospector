@@ -8,6 +8,20 @@ module Prospector
       end
     end
 
+    context 'when inline' do
+      before do
+        Prospector.configure do |config|
+          config.background_adapter = :inline
+        end
+      end
+
+      it 'performs immediately' do
+        expect(Prospector).to receive(:notify!)
+
+        subject.enqueue
+      end
+    end
+
     context 'when none' do
       before do
         Prospector.configure do |config|
@@ -15,9 +29,8 @@ module Prospector
         end
       end
 
-
-      it 'performs immediately' do
-        expect(Prospector).to receive(:notify!)
+      it 'skips calling our API' do
+        expect(Prospector).not_to receive(:notify!)
 
         subject.enqueue
       end

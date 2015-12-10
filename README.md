@@ -68,7 +68,21 @@ end
 
 Rails integration includes automatic detection and support for ActiveJob as well as Sidekiq, to deliver usage details to the Prospector API in the background on app boot.  Additionally, the rake task mentioned below is available to use at any time you see fit, for example as part of your deployment process.
 
-Valid background adapter options are `active_job`, `sidekiq`, and `none`.  ActiveJob is preferred and chosen in Rais 4.2 and above with built-in ActiveJob support.
+Valid background adapter options are `active_job`, `sidekiq`, `inline`, and `none`.  ActiveJob is preferred and chosen in Rais 4.2 and above with built-in ActiveJob support.
+
+```ruby
+# config/initializers/prospector.rb
+
+Prospector.configure do |config|
+  # Will default to using ActiveJob
+  # config.background_adapter = :active_job
+  # config.background_adapter = :sidekiq
+  # config.background_adapter = :inline
+  # config.background_adapter = :none
+end
+```
+
+You can use the `none` background adapter to skip sending information to the API automatically, and instead call at any point in time you see fit, whether via the rake task or manually.
 
 ### RubyMotion
 
@@ -87,7 +101,7 @@ rake prospector:deliver
 If you prefer to notify the Prospector API without using the included Rails or RubyMotion support, you can always call directly.
 
 ```ruby
-Prospector.notify!
+Prospector.notify! if Prospector.enabled?
 ```
 
 ## Development
