@@ -1,7 +1,17 @@
 module Prospector
   class Client
+    DEFAULT_ENDPOINT = 'http://api.gemprospector.com/v1/specifications.json'
+
+    attr_reader :endpoint
+
     def self.deliver(*args)
       new.deliver(*args)
+    end
+
+    def initialize(endpoint = DEFAULT_ENDPOINT, secret_token = nil, client_secret = nil)
+      @endpoint       = URI(endpoint)
+      @secret_token   = secret_token
+      @client_secret  = client_secret
     end
 
     def deliver(specifications)
@@ -16,6 +26,14 @@ module Prospector
       end
     end
 
+    def client_secret
+      @client_secret ||= Prospector.configuration.client_secret
+    end
+
+    def secret_token
+      @secret_token ||= Prospector.configuration.secret_token
+    end
+
     private
 
     def request
@@ -26,18 +44,14 @@ module Prospector
       @response ||= make_request
     end
 
-    def endpoint
-      @endpoint ||= URI('http://api.gemprospector.com/v1/specifications.json')
-    end
-
     def json
       @json ||= JSON.parse(response.body)
     end
 
     def build_request
       request = Net::HTTP::Post.new(endpoint)
-      request['X-Auth-Token']   = Prospector.configuration.secret_token
-      request['X-Auth-Secret']  = Prospector.configuration.client_secret
+      request['X-Auth-Token']   = secret_token
+      request['X-Auth-Secret']  = client_secret
       request['Content-Type']   = 'application/json'
       request
     end

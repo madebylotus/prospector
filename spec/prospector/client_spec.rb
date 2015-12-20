@@ -9,6 +9,10 @@ module Prospector
       end
     end
 
+    it 'returns the default endpoint' do
+      expect(subject.endpoint).to eq(URI(Prospector::Client::DEFAULT_ENDPOINT))
+    end
+
     context 'with invalid credentials' do
       let(:specifications) { [] }
 
@@ -49,6 +53,30 @@ module Prospector
         VCR.use_cassette 'cancelled_subscription' do
           expect { subject.deliver(specifications) }.to raise_error(AccountSubscriptionStatusError)
         end
+      end
+    end
+
+    describe 'when provided custom endpoint and credentials' do
+      let(:specifications) { [] }
+
+      subject do
+        described_class.new('http://api.lvh.me:3000', 'custom_token', 'custom_secret')
+      end
+
+      it 'returns the endpoint as a URI' do
+        expect(subject.endpoint).to be_a(URI)
+      end
+
+      it 'returns the correct endpoint we passed in' do
+        expect(subject.endpoint).to eq(URI('http://api.lvh.me:3000'))
+      end
+
+      it 'returns our custom token' do
+        expect(subject.secret_token).to eq('custom_token')
+      end
+
+      it 'returns our custom secret' do
+        expect(subject.client_secret).to eq('custom_secret')
       end
     end
   end
