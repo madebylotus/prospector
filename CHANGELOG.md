@@ -1,5 +1,13 @@
 # Prospector Changelog
 
+## Version 0.4.2
+
+* Allow easier customization of endpoint and credentials per client instance for development [PR #9](https://github.com/madebylotus/prospector/pull/10)
+
+## Version 0.4.1
+
+* Enhances detection of Rails servers for use with Auto Reporting features [PR #8](https://github.com/madebylotus/prospector/pull/8)
+
 ## Version 0.4
 
 * Adds support for an `inline` and `none` background adapter [PR #7](https://github.com/madebylotus/prospector/pull/7)
