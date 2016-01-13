@@ -1,5 +1,7 @@
 require "json"
 require "bundler"
+require "net/http"
+
 require "prospector/version"
 
 require "prospector/client"

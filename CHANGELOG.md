@@ -1,5 +1,9 @@
 # Prospector Changelog
 
+## Version 0.4.3
+
+* Properly require the "net/http" library
+
 ## Version 0.4.2
 
 * Allow easier customization of endpoint and credentials per client instance for development [PR #9](https://github.com/madebylotus/prospector/pull/10)
