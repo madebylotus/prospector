@@ -18,7 +18,7 @@ module Prospector
 
       it 'raises error' do
         VCR.use_cassette 'invalid credentials' do
-          expect { subject.deliver(specifications) }.to raise_error(AuthenticationError)
+          expect { subject.deliver(specifications, Prospector.ruby_version) }.to raise_error(AuthenticationError)
         end
       end
     end
@@ -29,7 +29,7 @@ module Prospector
 
       it 'returns true' do
         VCR.use_cassette 'valid credentials' do
-          expect(subject.deliver(specifications)).to be_truthy
+          expect(subject.deliver(specifications, Prospector.ruby_version)).to be_truthy
         end
       end
     end
@@ -39,19 +39,19 @@ module Prospector
 
       it 'raises an exception for a 500 error' do
         VCR.use_cassette 'server 500 error' do
-          expect { subject.deliver(specifications) }.to raise_error(UnknownError)
+          expect { subject.deliver(specifications, Prospector.ruby_version) }.to raise_error(UnknownError)
         end
       end
 
       it 'warns for expired accounts' do
         VCR.use_cassette 'expired_trial' do
-          expect { subject.deliver(specifications) }.to raise_error(AccountSubscriptionStatusError)
+          expect { subject.deliver(specifications, Prospector.ruby_version) }.to raise_error(AccountSubscriptionStatusError)
         end
       end
 
       it 'warns for cancelled accounts' do
         VCR.use_cassette 'cancelled_subscription' do
-          expect { subject.deliver(specifications) }.to raise_error(AccountSubscriptionStatusError)
+          expect { subject.deliver(specifications, Prospector.ruby_version) }.to raise_error(AccountSubscriptionStatusError)
         end
       end
     end

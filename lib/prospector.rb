@@ -49,7 +49,7 @@ module Prospector
 
       specifications = Bundler.environment.specs
 
-      Client.deliver(specifications)
+      Client.deliver(specifications, ruby_version)
     end
   end
 

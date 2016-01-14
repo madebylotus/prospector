@@ -14,8 +14,8 @@ module Prospector
       @client_secret  = client_secret
     end
 
-    def deliver(specifications)
-      set_request_body(specifications)
+    def deliver(specifications, ruby_version)
+      set_request_body(specifications, ruby_version)
 
       case response.code
       when "401" then raise AuthenticationError
@@ -56,8 +56,9 @@ module Prospector
       request
     end
 
-    def set_request_body(specifications)
+    def set_request_body(specifications, ruby_version)
       request.body = {
+        ruby_version: ruby_version.to_json,
         specifications: hash_from_specifications(specifications)
       }.to_json
     end
