@@ -4,6 +4,7 @@ require "net/http"
 
 require "prospector/version"
 
+require "prospector/ruby_version"
 require "prospector/client"
 require "prospector/configuration"
 require "prospector/error"
@@ -35,6 +36,10 @@ module Prospector
 
     def enabled?
       configuration.enabled?
+    end
+
+    def ruby_version
+      @ruby_version ||= RubyVersion.new
     end
 
     def notify!
