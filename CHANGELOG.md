@@ -1,5 +1,9 @@
 # Prospector Changelog
 
+## Version 0.5.0
+
+* Determine ruby version and deliver to API [PR #11](https://github.com/madebylotus/prospector/pull/11)
+
 ## Version 0.4.3
 
 * Properly require the "net/http" library
