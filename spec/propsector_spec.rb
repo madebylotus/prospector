@@ -56,7 +56,7 @@ describe Prospector do
 
       it 'delivers the specifications' do
         allow(Bundler).to receive(:environment).and_return(double(specs: []))
-        expect(Prospector::Client).to receive(:deliver).with([])
+        expect(Prospector::Client).to receive(:deliver).with([], Prospector.ruby_version)
 
         subject.notify!
       end

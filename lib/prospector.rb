@@ -4,6 +4,7 @@ require "net/http"
 
 require "prospector/version"
 
+require "prospector/ruby_version"
 require "prospector/client"
 require "prospector/configuration"
 require "prospector/error"
@@ -37,6 +38,10 @@ module Prospector
       configuration.enabled?
     end
 
+    def ruby_version
+      @ruby_version ||= RubyVersion.new
+    end
+
     def notify!
       raise NotEnabledError unless enabled?
 
@@ -44,7 +49,7 @@ module Prospector
 
       specifications = Bundler.environment.specs
 
-      Client.deliver(specifications)
+      Client.deliver(specifications, ruby_version)
     end
   end
 
