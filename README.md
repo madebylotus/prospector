@@ -2,6 +2,9 @@
 
 Prospector provides a simple integration with the [Gem Prospector](http://www.gemprospector.com) API allowing your team to stay on top of important updates to gems in your Ruby project.
 
+<img src="https://github.com/madebylotus/prospector/blob/master/marketing/infographic.png" width="300" />
+<img src="https://github.com/madebylotus/prospector/blob/master/marketing/screenshot.png" width="300" />
+
 ## Installation
 
 Add this line to your application's Gemfile:
