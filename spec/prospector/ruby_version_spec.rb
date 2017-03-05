@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe Prospector::RubyVersion do
-  let(:bundler_ruby_version) { Bundler.ruby_version }
+  let(:bundler_ruby_version) { Bundler::RubyVersion.system }
 
   subject { described_class.new }
 
@@ -14,15 +14,15 @@ describe Prospector::RubyVersion do
       json = subject.to_json
 
       expect(json).to include(engine: bundler_ruby_version.engine)
-      expect(json).to include(engine_version: bundler_ruby_version.engine_version)
-      expect(json).to include(version: bundler_ruby_version.version)
+      expect(json).to include(engine_version: bundler_ruby_version.engine_gem_version.version)
+      expect(json).to include(version: bundler_ruby_version.gem_version.version)
       expect(json).to include(patch_level: bundler_ruby_version.patchlevel)
     end
   end
 
   describe 'attributes' do
     it 'delegates #version' do
-      expect(subject.version).to eq(bundler_ruby_version.version)
+      expect(subject.version).to eq(bundler_ruby_version.gem_version.version)
     end
 
     it 'delegates #patch_level' do
@@ -34,7 +34,7 @@ describe Prospector::RubyVersion do
     end
 
     it 'delegates #engine_version' do
-      expect(subject.engine_version).to eq(bundler_ruby_version.engine_version)
+      expect(subject.engine_version).to eq(bundler_ruby_version.engine_gem_version.version)
     end
   end
 end
