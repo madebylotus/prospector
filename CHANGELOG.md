@@ -1,5 +1,9 @@
 # Prospector Changelog
 
+## Version 1.0.0
+
+* Require Bundler 1.12+ after changes to Bundler's API caused breaking changes [PR #13](https://github.com/madebylotus/prospector/pull/13)
+
 ## Version 0.5.0
 
 * Determine ruby version and deliver to API [PR #11](https://github.com/madebylotus/prospector/pull/11)
