@@ -15,7 +15,6 @@ require "prospector/railtie" if defined?(Rails)
 require "prospector/motion/config" if defined?(Motion::Project::Config)
 
 begin
-  require "pry"
   require "sidekiq"
 rescue LoadError
 end
